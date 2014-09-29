@@ -16,34 +16,34 @@ module Wildfire
         def approximate(mat)
           accuracy = 0.02 * Cv.arc_length(mat, false)
 
-          approxed_curve = temp_mat
-          Cv.approx_polydp(mat, approxed_curve, accuracy, true)
-          approxed_curve
+          return_temp_mat do |approxed_curve|
+            Cv.approx_polydp(mat, approxed_curve, accuracy, true)
+          end
         end
 
         def grey(mat)
-          grey_mat = temp_mat
-          Cv.cvt_color(mat, grey_mat, CV_BGR2GRAY)
-          grey_mat
+          return_temp_mat do |grey_mat|
+            Cv.cvt_color(mat, grey_mat, CV_BGR2GRAY)
+          end
         end
 
         def blur(mat)
-          blur_mat = temp_mat
-          Cv.gaussian_blur(mat, blur_mat, Cv::Size.new(5, 5), 0)
-          blur_mat
+          return_temp_mat do |blur_mat|
+            Cv.gaussian_blur(mat, blur_mat, Cv::Size.new(5, 5), 0)
+          end
         end
 
         def median_blur(mat)
-          blur_mat = temp_mat
-          Cv.median_blur(mat, blur_mat, 3)
-          blur_mat
+          return_temp_mat do |blur_mat|
+            Cv.median_blur(mat, blur_mat, 3)
+          end
         end
 
         def erode(mat)
-          eroded_mat = temp_mat
-          kernel = temp_mat
-          Cv.erode(mat, eroded_mat, kernel)
-          eroded_mat
+          return_temp_mat do |eroded_mat|
+            kernel = temp_mat
+            Cv.erode(mat, eroded_mat, kernel)
+          end
         end
 
         def dilate(mat)
@@ -54,22 +54,27 @@ module Wildfire
         end
 
         def canny(mat)
-          cannied = temp_mat
-          Cv.canny(mat, cannied, 100, 50)
-          cannied
+          return_temp_mat do |cannied|
+            Cv.canny(mat, cannied, 100, 50)
+          end
         end
 
         def substract(mat1, mat2)
-          result = temp_mat
-          Cv.subtract(mat1, mat2, result)
-          result
+          return_temp_mat do |result|
+            Cv.subtract(mat1, mat2, result)
+          end
         end
 
-        def binary(mat)
-          binaried = temp_mat
-          Cv.threshold(mat, binaried, 1, 1, Cv::THRESH_OTSU)
-          # Cv.threshold(mat, binaried, Cv::THRESH_BINARY)
-          binaried
+        def binary(mat, *args)
+          args = [1, 1, Cv::THRESH_OTSU] if args.empty?
+
+          return_temp_mat do |binaried|
+            Cv.threshold(mat, binaried, *args)
+          end
+        end
+
+        def thin(mat, *args)
+
         end
 
         def four_point_transform(mat, points)
@@ -98,23 +103,22 @@ module Wildfire
         end
 
         def warp(mat, perspective, new_size)
-          warped = temp_mat
-          Cv.warp_perspective(mat, warped, perspective, new_size,
-            Cv::INTER_LINEAR | Cv::WARP_INVERSE_MAP)
-          quick_save(warped)
-          warped
+          return_temp_mat do |warped|
+            Cv.warp_perspective(mat, warped, perspective, new_size,
+              Cv::INTER_LINEAR | Cv::WARP_INVERSE_MAP)
+          end
         end
 
         def transpose(mat)
-          transposed = temp_mat
-          Cv.transpose(mat, transposed)
-          transposed
+          return_temp_mat do |transposed|
+            Cv.transpose(mat, transposed)
+          end
         end
 
         def flip(mat)
-          flipped = temp_mat
-          Cv.flip(mat, flipped, 0)
-          flipped
+          return_temp_mat do |flipped|
+            Cv.flip(mat, flipped, 0)
+          end
         end
 
         def rotate(mat, repetitions)
@@ -129,6 +133,14 @@ module Wildfire
 
         def one_rotation(mat)
           flip(transpose(mat))
+        end
+
+        private
+
+        def return_temp_mat
+          mat = temp_mat
+          yield(mat)
+          mat
         end
       end
     end
