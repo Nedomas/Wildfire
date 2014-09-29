@@ -66,15 +66,15 @@ module Wildfire
         end
 
         def binary(mat, *args)
-          args = [1, 1, Cv::THRESH_OTSU] if args.empty?
+          args = [1, 1000, Cv::THRESH_OTSU] if args.empty?
 
           return_temp_mat do |binaried|
             Cv.threshold(mat, binaried, *args)
           end
         end
 
-        def thin(mat, *args)
-
+        def thin(mat)
+          Algorithms::GuoHallThinning.new(mat).perform
         end
 
         def four_point_transform(mat, points)
@@ -133,14 +133,6 @@ module Wildfire
 
         def one_rotation(mat)
           flip(transpose(mat))
-        end
-
-        private
-
-        def return_temp_mat
-          mat = temp_mat
-          yield(mat)
-          mat
         end
       end
     end
