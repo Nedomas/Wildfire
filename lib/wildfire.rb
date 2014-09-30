@@ -24,6 +24,15 @@ module Wildfire
 
         screen_cutter.screen_paths
       end
+
+      def cut_painted_screens(source_image_path)
+        a4_path = cut_a4(source_image_path)
+
+        screen_cutter = Converter::ScreenDivider.new(a4_path)
+        screen_cutter.cut_screens!
+
+        screen_cutter.screen_paths
+      end
     end
   end
 end

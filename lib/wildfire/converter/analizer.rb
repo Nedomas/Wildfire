@@ -21,15 +21,6 @@ module Wildfire
       end
 
       def page_contour
-        greyed = Transformer.grey(@resizer.to_small)
-        medianed = Transformer.median_blur(greyed)
-        eroded = Transformer.erode(medianed)
-        dilated = Transformer.dilate(medianed)
-        substracted = Transformer.substract(dilated, eroded)
-        binaried = Transformer.binary(substracted)
-        thinned = Transformer.thin(binaried)
-        # binding.pry
-
         result = Transformer.approximate(longest_contour)
         Orderer.to_tl_tr_br_bl(result.to_a)
       end
