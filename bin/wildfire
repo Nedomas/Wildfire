@@ -25,6 +25,15 @@ slop = Slop.new(help: true, banner: true) do
       puts "The screens were cut and placed at #{screen_filenames.join(', ')}"
     end
   end
+
+  command('painted_screens', description:
+    "'wildfire painted_screens <filename-of-image>'") do
+
+    run do |opts, args|
+      screen_filenames = Wildfire::Runner.cut_painted_screens(args.shift)
+      puts "The screens were cut and placed at #{screen_filenames.join(', ')}"
+    end
+  end
 end
 
 puts slop.help if ARGV.empty?

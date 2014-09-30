@@ -28,6 +28,7 @@ module Wildfire
         substracted = Transformer.substract(dilated, eroded)
         binaried = Transformer.binary(substracted)
         thinned = Transformer.thin(binaried)
+        binding.pry
 
         result = Transformer.approximate(longest_contour)
         Orderer.to_tl_tr_br_bl(result.to_a)

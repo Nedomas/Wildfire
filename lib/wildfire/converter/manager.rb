@@ -5,6 +5,11 @@ module Wildfire
 
       def initialize(full_path)
         @full_path = full_path
+
+        unless File.exist?(@full_path)
+          raise "The file #{@full_path} does not exits"
+        end
+
         @page_cutter = PageCutter.new(full)
         @screens = []
       end
@@ -37,7 +42,23 @@ module Wildfire
       end
 
       def full
-        Transformer.rotate(Cv.imread(@full_path), 3)
+        rotate_correctly!
+        Cv.imread(@full_path)
+      end
+
+      def rotate_correctly!
+        `bin/jhead-#{operating_system} -autorot #{@full_path}`
+      end
+
+      def operating_system
+        if OS.linux?
+          'linux'
+        elsif OS.osx?
+          'osx'
+        else
+          puts OS.report
+          raise 'Wildfire does not support your operating system'
+        end
       end
 
       def small
