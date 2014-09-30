@@ -7,6 +7,7 @@ require 'os'
 
 require_relative 'wildfire/manager'
 require_relative 'wildfire/screen_cutter'
+require_relative 'wildfire/screen_divider'
 require_rel 'wildfire/converter'
 
 module Wildfire
