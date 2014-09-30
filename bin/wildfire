@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+require_relative '../lib/wildfire'
+
+slop = Slop.new(help: true, banner: true) do
+  banner('Usage: wildfire [options]')
+  on :v, :version, 'Print version.' do
+    puts "Your version is #{Wildfire::VERSION}"
+  end
+
+  command('a4', description: "'wildfire a4 <filename-of-image>'") do
+    run do |opts, args|
+      cut_page_filename = Wildfire::Runner.cut_a4(args.shift)
+      puts "The page was cut and placed at #{cut_page_filename}"
+    end
+  end
+
+  command('printed_screens', description:
+    "'wildfire printed_screens <filename-of-image>'") do
+
+    run do |opts, args|
+      screen_filenames = Wildfire::Runner.cut_printed_screens(args.shift)
+      puts "The screens were cut and placed at #{screen_filenames.join(', ')}"
+    end
+  end
+end
+
+puts slop.help if ARGV.empty?
+slop.parse
