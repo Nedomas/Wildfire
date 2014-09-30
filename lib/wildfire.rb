@@ -3,6 +3,7 @@ require 'pry-stack_explorer'
 require 'require_all'
 require 'ropencv'
 require 'memoist'
+require 'os'
 
 require_relative 'wildfire/manager'
 require_relative 'wildfire/screen_cutter'
