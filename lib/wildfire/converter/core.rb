@@ -22,6 +22,14 @@ module Wildfire
         nodes = @full_path.split('/')[0...-1] + [name]
         nodes.join('/')
       end
+
+      class << self
+        def return_temp_mat
+          mat = temp_mat
+          yield(mat)
+          mat
+        end
+      end
     end
   end
 end

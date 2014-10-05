@@ -9,6 +9,7 @@ require_relative 'wildfire/manager'
 require_relative 'wildfire/screen_cutter'
 require_relative 'wildfire/screen_divider'
 require_rel 'wildfire/converter'
+require_rel 'wildfire/algorithms'
 
 module Wildfire
   class Runner
