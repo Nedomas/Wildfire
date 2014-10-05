@@ -333,7 +333,8 @@ module Wildfire
           perspective = Cv.get_perspective_transform(input, output)
 
           new_size = Cv::Size.new(calculator.max_width, calculator.max_height)
-          warp(mat, perspective, new_size)
+          warped = warp(mat, perspective, new_size)
+          rotate(flip(warped), 3)
         end
 
         def cv_point_array(array)
