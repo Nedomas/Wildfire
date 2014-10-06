@@ -47,7 +47,11 @@ module Wildfire
       end
 
       def rotate_correctly!
-        `bin/jhead-#{operating_system} -autorot #{@full_path}`
+        `#{gem_path}/bin/jhead-#{operating_system} -autorot #{@full_path}`
+      end
+
+      def gem_path
+        File.dirname(__FILE__).split('/')[0..-4].join('/')
       end
 
       def operating_system
