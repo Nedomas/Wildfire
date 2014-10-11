@@ -27,11 +27,6 @@ module Wildfire
         @original.size.height / @small_height
       end
 
-      # def big_point(point)
-      #   big = point.map { |xy| (xy * to_big_ratio).to_i }
-      #   Cv::Point.new(*big)
-      # end
-
       def big_point(coords)
         coords.map { |coord| (coord * to_big_ratio).to_i }
       end

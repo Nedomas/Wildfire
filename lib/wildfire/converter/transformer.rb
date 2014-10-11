@@ -76,11 +76,27 @@ module Wildfire
           end
         end
 
-        def binary(mat, *args)
-          args = [1, 1000, Cv::THRESH_OTSU] if args.empty?
+        def adaptive_threshold(mat, max_value = 255,
+          adaptive_method = Cv::ADAPTIVE_THRESH_GAUSSIAN_C,
+          threshold_type = Cv::THRESH_BINARY, block_size = 5, param1 = 4)
+
+          return_temp_mat do |thresholded|
+            Cv.adaptive_threshold(mat, thresholded, max_value, adaptive_method,
+              threshold_type, block_size, param1)
+          end
+        end
+
+        def binary_threshold(mat, *args)
+          args = [1, 255] if args.empty?
 
           return_temp_mat do |binaried|
-            Cv.threshold(mat, binaried, *args)
+            Cv.threshold(mat, binaried, *args, Cv::THRESH_BINARY)
+          end
+        end
+
+        def otsu_threshold(mat)
+          return_temp_mat do |otsued|
+            Cv.threshold(mat, otsued, 1, 255, Cv::THRESH_OTSU)
           end
         end
 

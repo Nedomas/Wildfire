@@ -33,7 +33,10 @@ module Wildfire
         screen_cutter = Converter::ScreenDivider.new(a4_path)
         screen_cutter.cut_screens!
 
-        screen_cutter.screen_paths
+        screen_cutter.screen_paths.map do |path|
+          beautifier = Converter::Beautifier.new(path)
+          beautifier.beautiful_path
+        end
       end
     end
   end
