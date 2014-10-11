@@ -8,5 +8,12 @@ module Wildfire
     def paths
       @screen_cutter.screen_paths
     end
+
+    def beautiful_paths
+      @screen_cutter.screen_paths.map do |path|
+        beautifier = Converter::Beautifier.new(path)
+        beautifier.beautiful_path
+      end
+    end
   end
 end
