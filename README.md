@@ -1,4 +1,5 @@
-# Wildfire
+![Wildfire](https://cloud.githubusercontent.com/assets/1877286/4690691/828a2a64-56f5-11e4-883a-345e8fed2383.png)
+
 
 Uses computer vision to cut objects from images.
 
